@@ -12,9 +12,9 @@ if (!isset($_SESSION['user']) || $_SESSION['user_type'] !== 'teachers') {
 $teacher_id = $_SESSION['user']['id'];
 $query = "
     SELECT subjects.name AS subject_name 
-    FROM teacher_subjects 
-    JOIN subjects ON teacher_subjects.subject_id = subjects.id 
-    WHERE teacher_subjects.teacher_id = $teacher_id";
+    FROM teacher_class_subjects 
+    JOIN subjects ON teacher_class_subjects.subject_id = subjects.id 
+    WHERE teacher_class_subjects.teacher_id = $teacher_id";
 $result = $conn->query($query);
 
 $assigned_classes = [];
@@ -33,6 +33,202 @@ if ($result->num_rows > 0) {
     <link rel="stylesheet" href="./css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            background: linear-gradient(135deg, #4ecdc4, #556270);
+            color: #333;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+        }
+
+        .sidebar nav ul li {
+            margin: 15px 0;
+        }
+
+        .sidebar nav ul li a {
+            text-decoration: none;
+            color: #ecf0f1;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .sidebar nav ul li a:hover {
+            background: #34495e;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .navbar h3 {
+            color: #fff;
+        }
+
+        .profile {
+            color: #fff;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .class-card {
+            background: linear-gradient(135deg, #ff6b6b, #f7b733);
+            color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .class-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .result-form .form-group {
+            margin-bottom: 15px;
+        }
+
+        .result-form input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .result-form .btn {
+            background: #4ecdc4;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .result-form .btn:hover {
+            background: #3bb0a1;
+        }
+
+        .result-actions {
+            display: flex;
+            justify-content: center; /* Center the buttons horizontally */
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .action-btn {
+            background: #556270;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .action-btn:hover {
+            background: #4ecdc4;
+        }
+
+        canvas {
+            max-width: 100%;
+        }
+
+        .modal {
+            position: fixed;
+            top: 50%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%); /* Adjust for modal size */
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
     <div class="sidebar">
@@ -72,7 +268,7 @@ if ($result->num_rows > 0) {
                 <?php if (!empty($assigned_classes)): ?>
                     <?php foreach ($assigned_classes as $class): ?>
                         <div class="class-card">
-                            <p>Subject: <?php echo $class['subject_name']; ?></p>
+                            <h5>Subject: <?php echo $class['subject_name']; ?></h5>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
@@ -82,13 +278,50 @@ if ($result->num_rows > 0) {
         </div>
 
         <div class="card">
-            <h4>Enter Results</h4>
-            <form class="result-form">
-                <div class="form-group">
-                    <input type="text" placeholder="Student ID" class="glass-input">
-                </div>
-                <button class="btn">Submit Results</button>
-            </form>
+            <div class="result-actions">
+                <button class="btn action-btn" id="importResultsBtn">Import Results</button>
+                <button class="btn action-btn">Export Results</button>
+                <button class="btn action-btn">Generate Graph Reports</button>
+            </div>
+        </div>
+
+        <!-- Modal for Import Results -->
+        <div id="importResultsModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close-btn" id="closeModal">&times;</span>
+                <h4>Select Class and Subject</h4>
+                <form id="importResultsForm" method="POST" action="generate_excel.php">
+                    <div class="form-group">
+                        <label for="classSelect">Class:</label>
+                        <select name="class_id" id="classSelect" required>
+                            <?php
+                            $classQuery = "SELECT id, name FROM classes";
+                            $classResult = $conn->query($classQuery);
+                            while ($class = $classResult->fetch_assoc()) {
+                                echo "<option value='{$class['id']}'>{$class['name']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectSelect">Subject:</label>
+                        <select name="subject_id" id="subjectSelect" required>
+                            <?php
+                            $subjectQuery = "
+                                SELECT DISTINCT subjects.id, subjects.name 
+                                FROM teacher_class_subjects 
+                                JOIN subjects ON teacher_class_subjects.subject_id = subjects.id 
+                                WHERE teacher_class_subjects.teacher_id = $teacher_id";
+                            $subjectResult = $conn->query($subjectQuery);
+                            while ($subject = $subjectResult->fetch_assoc()) {
+                                echo "<option value='{$subject['id']}'>{$subject['name']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn action-btn">Download Excel Template</button>
+                </form>
+            </div>
         </div>
 
         <div class="card">
@@ -98,6 +331,23 @@ if ($result->num_rows > 0) {
     </div>
 
     <script>
+        // Show modal
+        document.getElementById('importResultsBtn').addEventListener('click', function () {
+            document.getElementById('importResultsModal').style.display = 'block';
+        });
+
+        // Close modal
+        document.getElementById('closeModal').addEventListener('click', function () {
+            document.getElementById('importResultsModal').style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function (event) {
+            if (event.target === document.getElementById('importResultsModal')) {
+                document.getElementById('importResultsModal').style.display = 'none';
+            }
+        });
+
         // Sample data for the chart
         const labels = ['Class A', 'Class B', 'Class C', 'Class D'];
         const data = {
