@@ -195,6 +195,8 @@ if ($result->num_rows > 0) {
             display: flex;
             justify-content: center;
             align-items: center;
+            padding-left: 500px;
+            padding-top: 90px;
         }
 
         .modal-content {
@@ -228,6 +230,41 @@ if ($result->num_rows > 0) {
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            position: absolute;
+            background-color: #fff;
+            min-width: 200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .dropdown-content form {
+            margin: 0;
+            padding: 5px 0;
+        }
+
+        .dropdown-content button {
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            color: #333;
+            font-size: 1em;
+        }
+
+        .dropdown-content button:hover {
+            background-color: #f1f1f1;
+        }
     </style>
 </head>
 <body>
@@ -246,7 +283,7 @@ if ($result->num_rows > 0) {
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="#" class="menu-link">
+                    <a href="upload_individual_results.php" class="menu-link">
                         <i class="fas fa-chart-line"></i>Results
                     </a>
                 </li>
@@ -280,7 +317,19 @@ if ($result->num_rows > 0) {
         <div class="card">
             <div class="result-actions">
                 <button class="btn action-btn" id="importResultsBtn">Import Results</button>
-                <button class="btn action-btn">Export Results</button>
+                <div class="dropdown">
+                    <button class="btn action-btn" id="exportResultsBtn">Export Results</button>
+                    <div class="dropdown-content" style="display: none;">
+                        <form method="POST" action="export_excel.php">
+                            <input type="hidden" name="export_type" value="excel">
+                            <button type="submit" class="btn action-btn">Download as Excel</button>
+                        </form>
+                        <form method="POST" action="export_slips.php">
+                            <input type="hidden" name="export_type" value="slips">
+                            <button type="submit" class="btn action-btn">Download Result Slips</button>
+                        </form>
+                    </div>
+                </div>
                 <button class="btn action-btn">Generate Graph Reports</button>
             </div>
         </div>
@@ -345,6 +394,20 @@ if ($result->num_rows > 0) {
         window.addEventListener('click', function (event) {
             if (event.target === document.getElementById('importResultsModal')) {
                 document.getElementById('importResultsModal').style.display = 'none';
+            }
+        });
+
+        // Toggle dropdown for export options
+        document.getElementById('exportResultsBtn').addEventListener('click', function () {
+            const dropdownContent = document.querySelector('.dropdown-content');
+            dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', function (event) {
+            if (!event.target.matches('#exportResultsBtn')) {
+                const dropdownContent = document.querySelector('.dropdown-content');
+                if (dropdownContent) dropdownContent.style.display = 'none';
             }
         });
 
