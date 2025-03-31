@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $conn->real_escape_string($_POST['email']);
     $password = $conn->real_escape_string($_POST['password']);
 
-    $roles = ['admin', 'teachers', 'students'];
+    $roles = ['admins', 'teachers', 'students'];
     $user = null;
     $user_type = null;
 

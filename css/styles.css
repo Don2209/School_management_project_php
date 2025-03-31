@@ -1,0 +1,117 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    --primary-gradient: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+    --glass-bg: rgba(255, 255, 255, 0.15);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+    --text-light: rgba(255, 255, 255, 0.9);
+    --text-lighter: rgba(255, 255, 255, 0.7);
+    --blur-effect: blur(10px);
+    --card-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+body {
+    min-height: 100vh;
+    background: var(--primary-gradient);
+    color: var(--text-light);
+    overflow-x: hidden;
+}
+
+.sidebar {
+    position: fixed;
+    width: 250px;
+    height: 100%;
+    background: var(--glass-bg);
+    backdrop-filter: var(--blur-effect);
+    border-right: var(--glass-border);
+    padding: 25px;
+    box-shadow: var(--card-shadow);
+}
+
+.main-content {
+    margin-left: 250px;
+    padding: 30px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    margin-bottom: 30px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--blur-effect);
+    border-radius: 15px;
+    box-shadow: var(--card-shadow);
+}
+
+.card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--blur-effect);
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: var(--card-shadow);
+    border: var(--glass-border);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Common styles for all dashboards */
+.dashboard-title {
+    font-size: 2.2em;
+    margin-bottom: 25px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.menu-item {
+    list-style: none;
+    margin: 15px 0;
+}
+
+.menu-link {
+    color: var(--text-lighter);
+    text-decoration: none;
+    padding: 12px 15px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.menu-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+}
+
+.menu-link i {
+    margin-right: 12px;
+    font-size: 1.2em;
+}
+
+.btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn:hover {
+    background: linear-gradient(45deg, #ff8e8e, #ff6b6b);
+    transform: translateY(-2px);
+}
+
+/* Add more styles below */
