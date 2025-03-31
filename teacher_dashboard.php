@@ -52,11 +52,14 @@ if ($result->num_rows > 0) {
             display: flex;
             flex-direction: column;
             align-items: center;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
         }
 
         .sidebar h2 {
             margin-bottom: 20px;
-            font-size: 1.5em;
+            font-size: 2em;
+            font-weight: bold;
+            text-align: center;
         }
 
         .sidebar nav ul {
@@ -72,23 +75,25 @@ if ($result->num_rows > 0) {
         .sidebar nav ul li a {
             text-decoration: none;
             color: #ecf0f1;
-            font-size: 1em;
+            font-size: 1.2em;
             display: flex;
             align-items: center;
             gap: 10px;
             padding: 10px;
             border-radius: 5px;
-            transition: background 0.3s;
+            transition: background 0.3s, transform 0.3s;
         }
 
         .sidebar nav ul li a:hover {
             background: #34495e;
+            transform: scale(1.05);
         }
 
         .main-content {
             flex: 1;
             padding: 20px;
             overflow-y: auto;
+            background: #f4f4f4;
         }
 
         .navbar {
@@ -96,14 +101,60 @@ if ($result->num_rows > 0) {
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            background: #4ecdc4;
+            padding: 15px 20px;
+            border-radius: 10px;
+            color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .navbar h3 {
-            color: #fff;
+            font-size: 1.8em;
+            font-weight: bold;
         }
 
         .profile {
             color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile i {
+            font-size: 2.5em;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            flex: 1;
+            background: linear-gradient(135deg, #ff6b6b, #f7b733);
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-card h3 {
+            font-size: 2.5em;
+            margin: 0;
+        }
+
+        .stat-card p {
+            margin: 5px 0 0;
+            font-size: 1.2em;
         }
 
         .card {
@@ -112,6 +163,12 @@ if ($result->num_rows > 0) {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
             padding: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
 
         .class-grid {
@@ -121,42 +178,18 @@ if ($result->num_rows > 0) {
         }
 
         .class-card {
-            background: linear-gradient(135deg, #ff6b6b, #f7b733);
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
             color: #fff;
             padding: 15px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
         }
 
         .class-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        .result-form .form-group {
-            margin-bottom: 15px;
-        }
-
-        .result-form input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .result-form .btn {
-            background: #4ecdc4;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .result-form .btn:hover {
-            background: #3bb0a1;
         }
 
         .result-actions {
@@ -173,11 +206,13 @@ if ($result->num_rows > 0) {
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background 0.3s, transform 0.3s;
+            font-size: 1em;
         }
 
         .action-btn:hover {
             background: #4ecdc4;
+            transform: scale(1.05);
         }
 
         canvas {
@@ -189,14 +224,22 @@ if ($result->num_rows > 0) {
             top: 50%; /* Center vertically */
             left: 50%; /* Center horizontally */
             transform: translate(-50%, -50%); /* Adjust for modal size */
+            width: 400px; /* Set a fixed width for the modal */
+            background: rgba(255, 255, 255, 1); /* Solid white background */
+            z-index: 1000; /* Ensure it overlays everything */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow for better visibility */
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding-left: 500px;
-            padding-top: 90px;
+            background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+            z-index: 999; /* Ensure it is below the modal but above everything else */
         }
 
         .modal-content {
@@ -222,6 +265,7 @@ if ($result->num_rows > 0) {
         .form-group label {
             display: block;
             margin-bottom: 5px;
+            font-weight: bold;
         }
 
         .form-group select {
@@ -287,6 +331,11 @@ if ($result->num_rows > 0) {
                         <i class="fas fa-chart-line"></i>Results
                     </a>
                 </li>
+                <li class="menu-item">
+                    <a href="logout.php" class="menu-link">
+                        <i class="fas fa-sign-out-alt"></i>Logout
+                    </a>
+                </li>
             </ul>
         </nav>
     </div>
@@ -296,6 +345,21 @@ if ($result->num_rows > 0) {
             <h3>Welcome Back, <?php echo $_SESSION['user']['name']; ?></h3>
             <div class="profile">
                 <i class="fas fa-user-circle fa-2x"></i>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3><?php echo count($assigned_classes); ?></h3>
+                <p>Assigned Classes</p>
+            </div>
+            <div class="stat-card">
+                <h3>85%</h3>
+                <p>Average Pass Rate</p>
+            </div>
+            <div class="stat-card">
+                <h3>Term 1</h3>
+                <p>Current Term</p>
             </div>
         </div>
 
@@ -319,12 +383,35 @@ if ($result->num_rows > 0) {
                 <button class="btn action-btn" id="importResultsBtn">Import Results</button>
                 <div class="dropdown">
                     <button class="btn action-btn" id="exportResultsBtn">Export Results</button>
-                    <div class="dropdown-content" style="display: none;">
+                    <div class="dropdown-content" id="exportDropdown" style="display: none;">
                         <form method="POST" action="export_excel.php">
+                            <div class="form-group">
+                                <label for="termSelect">Select Term:</label>
+                                <select name="term_id" id="termSelect" required>
+                                    <?php
+                                    $termQuery = "SELECT id, term_name FROM school_terms";
+                                    $termResult = $conn->query($termQuery);
+                                    while ($term = $termResult->fetch_assoc()) {
+                                        echo "<option value='{$term['id']}'>{$term['term_name']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
                             <input type="hidden" name="export_type" value="excel">
                             <button type="submit" class="btn action-btn">Download as Excel</button>
                         </form>
                         <form method="POST" action="export_slips.php">
+                            <div class="form-group">
+                                <label for="termSelectSlips">Select Term:</label>
+                                <select name="term_id" id="termSelectSlips" required>
+                                    <?php
+                                    $termResult->data_seek(0); // Reset the result pointer
+                                    while ($term = $termResult->fetch_assoc()) {
+                                        echo "<option value='{$term['id']}'>{$term['term_name']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
                             <input type="hidden" name="export_type" value="slips">
                             <button type="submit" class="btn action-btn">Download Result Slips</button>
                         </form>
@@ -338,7 +425,7 @@ if ($result->num_rows > 0) {
         <div id="importResultsModal" class="modal" style="display: none;">
             <div class="modal-content">
                 <span class="close-btn" id="closeModal">&times;</span>
-                <h4>Select Class and Subject</h4>
+                <h4>Select Class, Subject, and Term</h4>
                 <form id="importResultsForm" method="POST" action="generate_excel.php">
                     <div class="form-group">
                         <label for="classSelect">Class:</label>
@@ -368,94 +455,123 @@ if ($result->num_rows > 0) {
                             ?>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="termSelect">Term:</label>
+                        <select name="term_id" id="termSelect" required>
+                            <?php
+                            $termQuery = "SELECT id, term_name FROM school_terms";
+                            $termResult = $conn->query($termQuery);
+                            while ($term = $termResult->fetch_assoc()) {
+                                echo "<option value='{$term['id']}'>{$term['term_name']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
                     <button type="submit" class="btn action-btn">Download Excel Template</button>
                 </form>
             </div>
         </div>
+        <div id="modalOverlay" class="modal-overlay" style="display: none;"></div>
 
         <div class="card">
             <h4>Progress Overview</h4>
             <canvas id="progressChart" width="400" height="200"></canvas>
         </div>
-    </div>
 
-    <script>
-        // Show modal
-        document.getElementById('importResultsBtn').addEventListener('click', function () {
-            document.getElementById('importResultsModal').style.display = 'block';
-        });
+        <script>
+            // Show modal
+            document.getElementById('importResultsBtn').addEventListener('click', function () {
+                document.getElementById('importResultsModal').style.display = 'block';
+                document.getElementById('modalOverlay').style.display = 'block';
+            });
 
-        // Close modal
-        document.getElementById('closeModal').addEventListener('click', function () {
-            document.getElementById('importResultsModal').style.display = 'none';
-        });
-
-        // Close modal when clicking outside
-        window.addEventListener('click', function (event) {
-            if (event.target === document.getElementById('importResultsModal')) {
+            // Close modal
+            document.getElementById('closeModal').addEventListener('click', function () {
                 document.getElementById('importResultsModal').style.display = 'none';
-            }
-        });
+                document.getElementById('modalOverlay').style.display = 'none';
+            });
 
-        // Toggle dropdown for export options
-        document.getElementById('exportResultsBtn').addEventListener('click', function () {
-            const dropdownContent = document.querySelector('.dropdown-content');
-            dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
-        });
+            // Close modal when clicking outside
+            document.getElementById('modalOverlay').addEventListener('click', function () {
+                document.getElementById('importResultsModal').style.display = 'none';
+                document.getElementById('modalOverlay').style.display = 'none';
+            });
 
-        // Close dropdown when clicking outside
-        window.addEventListener('click', function (event) {
-            if (!event.target.matches('#exportResultsBtn')) {
-                const dropdownContent = document.querySelector('.dropdown-content');
+            // Toggle dropdown for export options
+            document.getElementById('exportResultsBtn').addEventListener('click', function (event) {
+                event.stopPropagation(); // Prevent event from propagating to the window
+                const dropdownContent = document.getElementById('exportDropdown');
+                dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+            });
+
+            // Close dropdown when clicking outside
+            window.addEventListener('click', function () {
+                const dropdownContent = document.getElementById('exportDropdown');
                 if (dropdownContent) dropdownContent.style.display = 'none';
-            }
-        });
+            });
 
-        // Sample data for the chart
-        const labels = ['Class A', 'Class B', 'Class C', 'Class D'];
-        const data = {
-            labels: labels,
-            datasets: [{
-                label: 'Average Scores',
-                data: [85, 90, 78, 88],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)'
-                ],
-                borderWidth: 1
-            }]
-        };
+            // Fetch data for the chart
+            fetch('fetch_performance_data.php')
+                .then(response => response.json())
+                .then(data => {
+                    const labels = data.subjects;
+                    const malePassRates = data.malePassRates;
+                    const femalePassRates = data.femalePassRates;
 
-        const config = {
-            type: 'bar',
-            data: data,
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Class Performance Overview'
-                    }
-                }
-            },
-        };
+                    const chartData = {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Male Pass Rate (%)',
+                                data: malePassRates,
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Female Pass Rate (%)',
+                                data: femalePassRates,
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    };
 
-        // Render the chart
-        const progressChart = new Chart(
-            document.getElementById('progressChart'),
-            config
-        );
-    </script>
+                    const config = {
+                        type: 'bar',
+                        data: chartData,
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Subject Performance by Gender (Pass Rate)'
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 100,
+                                    title: {
+                                        display: true,
+                                        text: 'Pass Rate (%)'
+                                    }
+                                }
+                            }
+                        }
+                    };
+
+                    // Render the chart
+                    const progressChart = new Chart(
+                        document.getElementById('progressChart'),
+                        config
+                    );
+                });
+        </script>
+    </div>
 </body>
 </html>
